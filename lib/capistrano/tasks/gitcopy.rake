@@ -4,12 +4,7 @@ namespace :gitcopy do
 
   desc "Archive files to #{archive_name}"
   file archive_name do |file|
-    system "git branch | grep #{fetch(:branch)}"
-    if $?.exitstatus == 0
-      system "git checkout #{fetch(:branch)} && tar -czf #{ archive_name } ."
-    else
-      puts "Can't find commit for: #{fetch(:branch)}"
-    end
+    system "git checkout #{fetch(:branch)} && tar -czf #{ archive_name } ."
   end
 
   desc "Deploy #{archive_name} to release_path"
