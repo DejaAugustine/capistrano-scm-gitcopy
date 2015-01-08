@@ -1,15 +1,12 @@
 namespace :gitcopy do
 
-  archive_name =  "archive.#{ DateTime.now.strftime('%Y%m%d%m%s') }.tar.gz"
+  archive_name =  "/tmp/#{ fetch(:application) }.#{ DateTime.now.strftime('%Y%m%d%m%s') }.tar.gz"
 
   desc "Archive files to #{archive_name}"
   file archive_name do |file|
-      remotes = %x[ git remote -v ]
-      matches = /^origin\t(.*?) \(fetch\)/.match(remotes)
-      repo_url = matches[1]
-    system "git ls-remote #{repo_url} | grep #{fetch(:branch)}"
+    system "git branch | grep #{fetch(:branch)}"
     if $?.exitstatus == 0
-      system "git archive --remote #{repo_url} --format=tar #{fetch(:branch)} | gzip > #{ archive_name }"
+      system "git checkout #{fetch(:branch)} && tar -czf #{ archive_name } ."
     else
       puts "Can't find commit for: #{fetch(:branch)}"
     end
