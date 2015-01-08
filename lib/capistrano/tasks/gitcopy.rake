@@ -4,7 +4,7 @@ namespace :gitcopy do
 
   desc "Archive files to #{archive_name}"
   file archive_name do |file|
-    system "git checkout #{fetch(:branch)} && tar -czf #{ archive_name } ."
+    system "tar -czf #{ archive_name } ."
   end
 
   desc "Deploy #{archive_name} to release_path"
